@@ -27,7 +27,13 @@ public static class BudgetRules
     public static decimal ValidateAmount(decimal amount)
     {
         // TODO: guard clauses + decimal.Round(amount, 2)
-        throw new NotImplementedException();
+
+        if (amount  <= 0 || amount > MaxAmount)
+        {
+            throw new InvalidExpenseException("The amount must be greater than zero, less than or equal to maximum.");
+        }
+        return decimal.Round(amount, 2);
+
     }
 
     /// <summary>
@@ -39,7 +45,16 @@ public static class BudgetRules
     public static string ClassifyAmount(decimal amount)
     {
         // TODO
-        throw new NotImplementedException();
+        return amount switch
+        {
+            <= 0 => throw new InvalidExpenseException("The amount must be greater than zero."),
+            < 10 => "Micro",
+            < 50 => "Small",
+            < 200 => "Medium",
+            _ => "Large"
+
+        };
+        
     }
 
     /// <summary>
@@ -52,7 +67,18 @@ public static class BudgetRules
     public static string? NormalizeCategory(string? input)
     {
         // TODO
-        throw new NotImplementedException();
+
+        var converted = input?.Trim().ToLower();
+
+        return converted switch
+        {
+            "food" or "f" => "Food",
+            "transport" or "t" => "Transport",
+            "utilities" or "u" => "Utilities",
+            "entertainment" or "e" => "Entertainment",
+            "other" or "o"           => "Other",
+            _ => null
+        };
     }
 
     /// <summary>
@@ -63,27 +89,42 @@ public static class BudgetRules
     public static string BudgetStatus(decimal remaining, decimal monthlyLimit)
     {
         // TODO
-        throw new NotImplementedException();
+
+        if (monthlyLimit <= 0)
+        {
+            throw new InvalidExpenseException("The monthly limit must be greater than zero.");
+        }
+
+        if (remaining < 0)
+        {
+            return "OVER BUDGET";
+        }
+
+        if (remaining < monthlyLimit * NearLimitFraction)
+        {
+            return "Almost out";
+        }
+
+        return "On track";
+
     }
 
     /// <summary>
     /// Formats an amount as currency using the default "$" symbol.
     /// Implement this as an expression-bodied member that calls the overload.
     /// </summary>
-    public static string FormatCurrency(decimal amount)
-    {
-        // TODO: return FormatCurrency(amount, "$");
-        throw new NotImplementedException();
-    }
+    public static string FormatCurrency(decimal amount) => FormatCurrency(amount, "$");
+       
+     
+         /// <summary>
+         /// Formats an amount as currency using the given symbol, e.g. "$62.40".
+         /// </summary>
+         public static string FormatCurrency(decimal amount, string currencySymbol)
+         {
+             // TODO: use a "0.00" format string
 
-    /// <summary>
-    /// Formats an amount as currency using the given symbol, e.g. "$62.40".
-    /// </summary>
-    public static string FormatCurrency(decimal amount, string currencySymbol)
-    {
-        // TODO: use a "0.00" format string
-        throw new NotImplementedException();
-    }
+             return $"{currencySymbol}{amount:0.00}";
+         }
 }
 
 /// <summary>
