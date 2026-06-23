@@ -22,6 +22,19 @@
 using ExpenseTracker;
 
 
+
+decimal monthlyBudget = 0m;
+decimal totalSpent = 0m;
+int expenseCount = 0;
+decimal highestExpense = 0m;
+
+
+decimal foodTotal = 0m;
+decimal transportTotal = 0m;
+decimal utilitiesTotal = 0m;
+decimal entertainmentTotal = 0m;
+decimal otherTotal = 0m;
+
 const string banner = """
                       ============================================================
                         MyBudget Expense Tracker
@@ -119,6 +132,57 @@ while (runningMenu)
             string? optionalNote = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(optionalNote)) 
                 optionalNote = null;
+
+            totalSpent += amount;
+            expenseCount++;
+
+            if (amount > highestExpense)
+            {
+                highestExpense = amount;
+            }
+
+            switch (category)
+            {
+                case "Food":
+                    foodTotal += amount;
+                    break;
+                case "Transport":
+                    transportTotal += amount;
+                    break;
+                case "Utilities":
+                    utilitiesTotal += amount;
+                    break;
+                case "Entertainment":
+                    entertainmentTotal += amount;
+                    break;
+                case "Other":
+                    otherTotal += amount;
+                    break;
+            }
+
+            string size = BudgetRules.ClassifyAmount(amount);
+            Console.WriteLine($"Added : {BudgetRules.FormatCurrency(amount)} | {category} | {date} ");
+            Console.WriteLine($"Size :  {size}");
+
+            if (monthlyBudget > 0)
+            {
+                decimal remainingBudget = monthlyBudget - totalSpent;
+                string statusOfBudget = BudgetRules.BudgetStatus(remainingBudget, monthlyBudget);
+                
+                Console.WriteLine($"Budget: {BudgetRules.FormatCurrency(remainingBudget)} remaining of {BudgetRules.FormatCurrency(monthlyBudget)} --> {statusOfBudget}");
+            }
+            
+            break;
+        case "2" :
+            break;
+        case "3" :
+            break;
+        case "4" :
+            runningMenu = false;
+            Console.WriteLine("See you!");
+            break;
+        default:
+            Console.WriteLine("Invalid choice, please try again");
             break;
     }
     
