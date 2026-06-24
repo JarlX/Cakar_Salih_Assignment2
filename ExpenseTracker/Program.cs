@@ -174,6 +174,30 @@ while (runningMenu)
             
             break;
         case "2" :
+            if (expenseCount == 0)
+            {
+                Console.WriteLine("No expenses yet.");
+            }
+            else
+            {
+                decimal avg = totalSpent / expenseCount;
+                Console.WriteLine($"  Expenses    : {expenseCount}");
+                Console.WriteLine($"  Total spent : {BudgetRules.FormatCurrency(totalSpent)}");
+                Console.WriteLine($"  Average     : {BudgetRules.FormatCurrency(avg)}");
+                Console.WriteLine($"  Highest     : {BudgetRules.FormatCurrency(highestExpense)}");
+                Console.WriteLine($"\n  Food        : {BudgetRules.FormatCurrency(foodTotal)}");
+                Console.WriteLine($"  Transport   : {BudgetRules.FormatCurrency(transportTotal)}");
+                Console.WriteLine($"  Utilities   : {BudgetRules.FormatCurrency(utilitiesTotal)}");
+                Console.WriteLine($"  Entertainment: {BudgetRules.FormatCurrency(entertainmentTotal)}");
+                Console.WriteLine($"  Other       : {BudgetRules.FormatCurrency(otherTotal)}");
+
+                if (monthlyBudget > 0)
+                {
+                    decimal remaining = monthlyBudget - totalSpent;
+                    string status = BudgetRules.BudgetStatus(remaining, monthlyBudget);
+                    Console.WriteLine($"\n  Budget: {BudgetRules.FormatCurrency(remaining)} remaining of {BudgetRules.FormatCurrency(monthlyBudget)} -> {status}");
+                }
+            }
             break;
         case "3" :
             Console.WriteLine("Monthly Budget: ");
