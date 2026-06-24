@@ -176,7 +176,26 @@ while (runningMenu)
         case "2" :
             break;
         case "3" :
+            Console.WriteLine("Monthly Budget: ");
+
+            if (decimal.TryParse(Console.ReadLine(), out decimal budget) && budget > 0m)
+            {
+                monthlyBudget = budget;
+                Console.WriteLine($"Monthly Budget: {BudgetRules.FormatCurrency(monthlyBudget)}");
+
+                if (monthlyBudget > 0)
+                {
+                    decimal remainingBudget = monthlyBudget - totalSpent;
+                    string statusOfBudget = BudgetRules.BudgetStatus(remainingBudget, monthlyBudget);
+                    Console.WriteLine($"Budget is {BudgetRules.FormatCurrency(remainingBudget)} remaining of {BudgetRules.FormatCurrency(monthlyBudget)} | {statusOfBudget}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid input, please enter valid amount.");
+            }
             break;
+        
         case "4" :
             runningMenu = false;
             Console.WriteLine("See you!");
