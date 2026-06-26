@@ -84,6 +84,13 @@ while (runningMenu)
                 {
                     Console.WriteLine(ex.Message);
                 }
+                finally
+                {
+                    if (amount > 0m)
+                    {
+                        Console.WriteLine($"{BudgetRules.FormatCurrency(amount)} is added!");
+                    }
+                }
                 
             }
             
@@ -161,7 +168,14 @@ while (runningMenu)
             }
 
             string size = BudgetRules.ClassifyAmount(amount);
-            Console.WriteLine($"Added : {BudgetRules.FormatCurrency(amount)} | {category} | {date} ");
+            
+            string displayDesc = description.Length > 20 
+                ? description[..20] + "..." + description[^1]
+                : description;
+
+            
+            Console.WriteLine($"Added : {BudgetRules.FormatCurrency(amount)} | {category} | {date}");
+            Console.WriteLine($"Description: {displayDesc}");
             Console.WriteLine($"Size :  {size}");
 
             if (monthlyBudget > 0)
