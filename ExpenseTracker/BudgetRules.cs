@@ -12,6 +12,9 @@
 //  Work one method at a time. Run the tests, watch them turn green.
 //  All methods are pure: no Console I/O, no shared state.
 // =====================================================================
+
+// Salih Can Cakar N01793130    
+
 namespace ExpenseTracker;
 
 public static class BudgetRules
