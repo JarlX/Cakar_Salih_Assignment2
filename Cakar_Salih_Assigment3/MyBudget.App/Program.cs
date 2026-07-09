@@ -17,13 +17,10 @@ var builder = Host.CreateApplicationBuilder(args);
 
 string dataPath = Path.Combine(AppContext.BaseDirectory, "expenses.json");
 
-// TODO (Module 8): register your services against their interfaces so the
-// container can construct ConsoleApp. You will need, for example:
-//   - IExpenseStore       -> JsonExpenseStore(dataPath)
-//   - IExpenseRepository  -> ExpenseRepository
-//   - IBudgetService      -> BudgetService
-//   - ConsoleApp          (the UI, so it can be resolved below)
-// Choose appropriate service lifetimes (singleton / scoped / transient).
+builder.Services.AddSingleton<IExpenseStore>(new JsonExpenseStore(dataPath));
+builder.Services.AddSingleton<IExpenseRepository, ExpenseRepository>();
+builder.Services.AddSingleton<IBudgetService, BudgetService>();
+builder.Services.AddSingleton<ConsoleApp>();
 
 using IHost host = builder.Build();
 
